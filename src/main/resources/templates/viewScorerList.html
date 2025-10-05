@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="fi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <title>VEIKKAUS ### Tournament player list ###</title>
+    <link rel="stylesheet" th:href="@{/jquery-ui-1.12.1.custom/jquery-ui.css}"/>
+    <link rel="stylesheet" th:href="@{/veikkaus-jquery-style.css}"/>
+    <script th:src="@{/jquery-ui-1.12.1.custom/external/jquery/jquery.js}"></script>
+    <script th:src="@{/jquery-ui-1.12.1.custom/jquery-ui.js}"></script>
+</head>
+<body>
+<p>
+    <a class="show-tooltip" th:href="@{/index.html}"
+       title="Go back to main page">Back to main page</a>
+</p>
+<p>
+    <a class="show-tooltip" th:href="@{/scorer/getCreate}"
+       title="Create new scorer">Create a new scorer</a>
+</p>
+<table>
+    <tr>
+        <th>Player first name</th>
+        <th>Player last name</th>
+        <th>Team name</th>
+        <th>Tournament name</th>
+        <th>Tournament year</th>
+        <th>Player's goals in this tournament</th>
+    </tr>
+    <tr th:each="scorer : ${scorers}">
+        <td th:text="${scorer.tournamentPlayer.player.firstName}"/>
+        <td th:text="${scorer.tournamentPlayer.player.lastName}"/>
+        <td th:text="${scorer.tournamentPlayer.tournamentTeam.team.name}"/>
+        <td th:text="${scorer.tournamentPlayer.tournamentTeam.tournament.name}"/>
+        <td th:text="${scorer.tournamentPlayer.goals}"/>
+        <td><a class="show-tooltip"
+               th:href="@{/scorer/getDetails(id=${scorer.id})}"
+               title="Show details of scorer">Show details</a></td>
+        <td><a class="show-tooltip"
+               th:href="@{/scorer/getModify(id=${scorer.id})}"
+               title="Modify details of scorer">Modify</a></td>
+        <td><a class="show-tooltip"
+               th:href="@{/scorer/getDelete(id=${scorer.id})}"
+               title="Delete scorer">Delete</a></td>
+    </tr>
+</table>
+<script th:src="@{/js/common-navigation.js}"></script>
+</body>
+</html>

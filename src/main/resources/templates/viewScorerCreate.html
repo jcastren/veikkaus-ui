@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="fi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <title>VEIKKAUS ### Scorer create ###</title>
+    <link rel="stylesheet" th:href="@{/jquery-ui-1.12.1.custom/jquery-ui.css}"/>
+    <link rel="stylesheet" th:href="@{/veikkaus-jquery-style.css}"/>
+    <script th:src="@{/jquery-ui-1.12.1.custom/external/jquery/jquery.js}"></script>
+    <script th:src="@{/jquery-ui-1.12.1.custom/jquery-ui.js}"></script>
+</head>
+<body>
+<h1>Create new scorer</h1>
+<p>
+    <a class="show-tooltip" th:href="@{/scorer/getAll}"
+       title="Go back to scorer list">Back to scorer list</a>
+</p>
+<br/>
+<form action="#" method="post"
+      th:action="@{/scorer/postCreate}" th:object="${scorer}">
+    <div>
+        <label class="show-tooltip" title="Select a tournament player for the scorer">Select tournament player</label>
+        <select th:field="*{tournamentPlayer.id}">
+            <option th:each="tournamentPlayer : ${allTournamentPlayers}"
+                    th:text="${tournamentPlayer.player.firstName}" th:value="${tournamentPlayer.id}">
+            </option>
+        </select>
+    </div>
+    <div>
+        <label class="show-tooltip" title="Select a game for the scorer">Select game</label>
+        <select th:field="*{game.id}">
+            <option th:each="game : ${allGames}"
+                    th:text="${game.homeTeam.team.name} + ' - ' + ${game.awayTeam.team.name}" th:value="${game.id}">
+            </option>
+        </select>
+    </div>
+    <p>
+        <button class="show-tooltip ui-button ui-corner-all ui-widget"
+                title="Create scorer" type="submit">
+            Create scorer
+        </button>
+        <button class="show-tooltip ui-button ui-corner-all ui-widget"
+                title="Reset fields" type="reset">
+            Reset fields
+        </button>
+    </p>
+</form>
+
+<!--
+<form action="#" th:action="@{/scorer/postCreate}"
+    th:object="${scorer}" method="post">
+    <form action="#" th:action="@{/scorer/postCreate}"
+    th:object="${tournamentPlayer}" method="post">
+    <div>
+        <label class="show-tooltip" title="Select a tournament">Select tournament</label>
+        <select th:field="*{tournament.id}">
+            <option th:each="tournament : ${allTournaments}"
+                    th:value="${tournament.id}" th:text="${tournament.name} ${tournament.year}">
+            </option>
+        </select>
+    </div>
+    -->
+
+<!-- 		<div>
+			<label class="show-tooltip" title="Select a tournament game">Select tournament game</label>
+			<select th:field="*{tournamentTeam.id}">
+				<option th:each="tournamentTeam : ${allTournamentTeams}" 
+						th:value="${tournamentTeam.id}" th:text="${tournamentTeam.team.name}">
+				</option>
+			</select>
+		</div>
+		-->
+<!--
+<div>
+    <label class="show-tooltip" title="Select a tournament player for the scorer">Select tournament player</label>
+    <select th:field="*{tournamentPlayer.id}">
+    -->
+<!-- 				<option th:each="tournamentPlayer : ${allTournamentPlayers}" 
+						th:value="${tournamentPlayer.id}" th:text="${tournamentPlayer.player.firstName} ${tournamentPlayer.player.lastName}">
+				</option>
+		-->        <!-- <option th:each="tournamentPlayer : ${allTournamentPlayers}"
+						th:value="${tournamentPlayer.id}" th:text="${tournamentPlayer.player.firstName}">
+				</option>
+			</select>
+		</div>-->
+<!--
+<div>
+    <label class="show-tooltip" title="Select a player to the tournament player">Select player</label>
+    <select th:field="*{player.id}">
+        <option th:each="player : ${allPlayers}"
+                th:value="${player.id}" th:text="${player.firstName} + ' ' + ${player.lastName}">
+        </option>
+    </select>
+</div>
+<p>
+    Goals: <input type="text" th:field="*{goals}"/>
+</p>
+ -->
+
+<!--
+<p>
+   <button type="submit"
+       class="show-tooltip ui-button ui-corner-all ui-widget" title="Create tournament player">
+       Create tournament player
+   </button>
+   <button type="reset"
+       class="show-tooltip ui-button ui-corner-all ui-widget" title="Reset fields">
+       Reset fields
+   </button>
+</p>
+</form>-->
+<script th:src="@{/js/common-navigation.js}"></script>
+</body>
+</html>

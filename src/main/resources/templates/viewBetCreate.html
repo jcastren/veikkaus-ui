@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="fi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <title>VEIKKAUS ### Bet create ###</title>
+    <link rel="stylesheet" th:href="@{/jquery-ui-1.12.1.custom/jquery-ui.css}"/>
+    <link rel="stylesheet" th:href="@{/veikkaus-jquery-style.css}"/>
+    <script th:src="@{/jquery-ui-1.12.1.custom/external/jquery/jquery.js}"></script>
+    <script th:src="@{/jquery-ui-1.12.1.custom/jquery-ui.js}"></script>
+</head>
+<body>
+<h1>Create new Bet</h1>
+<p>
+    <a class="show-tooltip" th:href="@{/bet/getAll}"
+       title="Go back to Bet list">Back to Bet list</a>
+</p>
+<br/>
+<form action="#" method="post"
+      th:action="@{/bet/postCreate}" th:object="${bet}">
+    <div>
+        <label class="show-tooltip" title="Select a user for the bet">Select user</label>
+        <select th:field="*{user.id}">
+            <option th:each="user : ${allUsers}"
+                    th:text="${user.name}" th:value="${user.id}">
+            </option>
+        </select>
+    </div>
+    <div>
+        <label class="show-tooltip" title="Select a tournament for the bet">Select tournament</label>
+        <select th:field="*{tournament.id}">
+            <option th:each="tournament : ${allTournaments}"
+                    th:text="${tournament.name}" th:value="${tournament.id}">
+            </option>
+        </select>
+    </div>
+    <div>
+        <label class="show-tooltip" title="Select a player to the Bet">Select status</label>
+        <select th:field="*{status.id}">
+            <option th:each="status : ${allStatuses}"
+                    th:text="${status.description}" th:value="${status.id}">
+            </option>
+        </select>
+    </div>
+
+    <p>
+        <button class="show-tooltip ui-button ui-corner-all ui-widget"
+                title="Create Bet" type="submit">
+            Create Bet
+        </button>
+        <button class="show-tooltip ui-button ui-corner-all ui-widget"
+                title="Reset fields" type="reset">
+            Reset fields
+        </button>
+    </p>
+</form>
+<script th:src="@{/js/common-navigation.js}"></script>
+</body>
+</html>

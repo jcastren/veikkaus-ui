@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="fi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <title>VEIKKAUS ### Player confirm delete ###</title>
+    <link rel="stylesheet" th:href="@{/jquery-ui-1.12.1.custom/jquery-ui.css}"/>
+    <link rel="stylesheet" th:href="@{/veikkaus-jquery-style.css}"/>
+    <script th:src="@{/jquery-ui-1.12.1.custom/external/jquery/jquery.js}"></script>
+    <script th:src="@{/jquery-ui-1.12.1.custom/jquery-ui.js}"></script>
+</head>
+<body>
+<h1>Player delete confirm</h1>
+<p th:text="'First name: ' + ${player.firstName}"/>
+<p th:text="'Last name: ' + ${player.lastName}"/>
+<form action="#" method="post" th:action="@{/player/postDelete}" th:object="${player}">
+    <input th:field="*{id}" type="hidden"/>
+    <button class="ui-button ui-corner-all ui-widget"
+            title="Confirm deleting of player"
+            type="submit">Confirm deleting player
+    </button>
+</form>
+<form action="#" method="get"
+      th:action="@{/player/getAll}" th:object="${player}">
+    <button class="ui-button ui-corner-all ui-widget"
+            title="Cancel deleting of player"
+            type="submit">Cancel deleting player
+    </button>
+</form>
+<script th:src="@{/js/common-navigation.js}"></script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="fi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <title>VEIKKAUS ### User role confirm delete ###</title>
+    <link rel="stylesheet" th:href="@{/jquery-ui-1.12.1.custom/jquery-ui.css}"/>
+    <link rel="stylesheet" th:href="@{/veikkaus-jquery-style.css}"/>
+    <script th:src="@{/jquery-ui-1.12.1.custom/external/jquery/jquery.js}"></script>
+    <script th:src="@{/jquery-ui-1.12.1.custom/jquery-ui.js}"></script>
+</head>
+<body>
+<h1>User role delete confirm</h1>
+<p th:text="'Name: ' + ${userRole.name}"/>
+<form action="#" method="post"
+      th:action="@{/userRole/postDelete}" th:object="${userRole}">
+    <input th:field="*{id}" type="hidden"/>
+    <button class="ui-button ui-corner-all ui-widget"
+            title="Confirm deleting of user role"
+            type="submit">Confirm deleting
+        user role
+    </button>
+</form>
+<form action="#" method="get"
+      th:action="@{/userRole/getAll}" th:object="${userRole}">
+    <button class="ui-button ui-corner-all ui-widget"
+            title="Cancel deleting of user role"
+            type="submit">Cancel deleting
+        user role
+    </button>
+</form>
+<script th:src="@{/js/common-navigation.js}"></script>
+</body>
+</html>

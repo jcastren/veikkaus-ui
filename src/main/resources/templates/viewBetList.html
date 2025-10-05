@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="fi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <title>VEIKKAUS ### Bet list ###</title>
+    <link rel="stylesheet" th:href="@{/jquery-ui-1.12.1.custom/jquery-ui.css}"/>
+    <link rel="stylesheet" th:href="@{/veikkaus-jquery-style.css}"/>
+    <script th:src="@{/jquery-ui-1.12.1.custom/external/jquery/jquery.js}"></script>
+    <script th:src="@{/jquery-ui-1.12.1.custom/jquery-ui.js}"></script>
+</head>
+<body>
+<p>
+    <a class="show-tooltip" th:href="@{/index.html}"
+       title="Go back to main page">Back to main page</a>
+</p>
+<p>
+    <a class="show-tooltip" th:href="@{/bet/getCreate}"
+       title="Create new Bet">Create a new Bet</a>
+</p>
+<table>
+    <tr>
+        <th>Bet user</th>
+        <th>Bet tournament</th>
+        <th>Bet status</th>
+    </tr>
+    <tr th:each="bet : ${bets}">
+        <td th:text="${bet.user.name}"/>
+        <td th:text="${bet.tournament.name}"/>
+        <td th:text="${bet.status.description}"/>
+        <td><a class="show-tooltip"
+               th:href="@{/bet/getDetails(id=${bet.id})}"
+               title="Show details of Bet">Show details</a></td>
+        <td><a class="show-tooltip"
+               th:href="@{/bet/getModify(id=${bet.id})}"
+               title="Modify details of Bet">Modify</a></td>
+        <td><a class="show-tooltip"
+               th:href="@{/bet/getDelete(id=${bet.id})}"
+               title="Delete Bet">Delete</a></td>
+    </tr>
+</table>
+<script th:src="@{/js/common-navigation.js}"></script>
+</body>
+</html>

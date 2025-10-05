@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="fi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <title>VEIKKAUS ### User list ###</title>
+    <link rel="stylesheet" th:href="@{/jquery-ui-1.12.1.custom/jquery-ui.css}"/>
+    <link rel="stylesheet" th:href="@{/veikkaus-jquery-style.css}"/>
+    <script th:src="@{/jquery-ui-1.12.1.custom/external/jquery/jquery.js}"></script>
+    <script th:src="@{/jquery-ui-1.12.1.custom/jquery-ui.js}"></script>
+</head>
+<body>
+<p>
+    <a class="show-tooltip" th:href="@{/index.html}"
+       title="Go back to main page">Back to main page</a>
+</p>
+<p>
+    <a class="show-tooltip" th:href="@{/user/getCreate}"
+       title="Create new user">Create a new user</a>
+</p>
+<table>
+    <tr>
+        <th>User role name</th>
+        <th>Email</th>
+        <th>User name</th>
+        <th>Password</th>
+    </tr>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.userRole.name}"/>
+        <td th:text="${user.email}"/>
+        <td th:text="${user.name}"/>
+        <td th:text="${user.password}"/>
+        <td><a class="show-tooltip"
+               th:href="@{/user/getDetails(id=${user.id})}"
+               title="Show details of user">Show details</a></td>
+        <td><a class="show-tooltip"
+               th:href="@{/user/getModify(id=${user.id})}"
+               title="Modify details of user">Modify</a></td>
+        <td><a class="show-tooltip"
+               th:href="@{/user/getDelete(id=${user.id})}"
+               title="Delete user">Delete</a></td>
+    </tr>
+</table>
+<script th:src="@{/js/common-navigation.js}"></script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="fi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <title>VEIKKAUS ### Tournament player modify ###</title>
+    <link rel="stylesheet" th:href="@{/jquery-ui-1.12.1.custom/jquery-ui.css}"/>
+    <link rel="stylesheet" th:href="@{/veikkaus-jquery-style.css}"/>
+    <script th:src="@{/jquery-ui-1.12.1.custom/external/jquery/jquery.js}"></script>
+    <script th:src="@{/jquery-ui-1.12.1.custom/jquery-ui.js}"></script>
+</head>
+<body>
+<h1>Modify Tournament player</h1>
+<p>
+    <a id="tooltipList" th:href="@{/tournamentPlayer/getAll}" title="Go back to Tournament player list">
+        Back to Tournament player list</a>
+</p>
+<br/>
+<form action="#" method="post"
+      th:action="@{/tournamentPlayer/postModify}" th:object="${tournamentPlayer}">
+    <input th:field="*{id}" type="hidden"/>
+    <div>
+        <label class="show-tooltip" title="Select a tournament team for the player">Select tournament team</label>
+        <select th:field="*{tournamentTeam.id}">
+            <option th:each="tournamentTeam : ${allTournamentTeams}"
+                    th:text="${tournamentTeam.team.name}" th:value="${tournamentTeam.id}">
+            </option>
+        </select>
+    </div>
+    <div>
+        <label class="show-tooltip" title="Select a player to the tournament player">Select player</label>
+        <select th:field="*{player.id}">
+            <option th:each="player : ${allPlayers}"
+                    th:text="${player.firstName} + ' ' + ${player.lastName}" th:value="${player.id}">
+            </option>
+        </select>
+    </div>
+    <p>
+        Goals: <input th:field="*{goals}" type="text"/>
+    </p>
+    <button id="buttonModify" title="Save changed Tournament team information to database" type="submit">Save to DB
+    </button>
+</form>
+<script th:src="@{/js/common-navigation.js}"></script>
+</body>
+</html>

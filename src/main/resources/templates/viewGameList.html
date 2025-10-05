@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="fi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <title>VEIKKAUS ### Game list ###</title>
+    <link rel="stylesheet" th:href="@{/jquery-ui-1.12.1.custom/jquery-ui.css}"/>
+    <link rel="stylesheet" th:href="@{/veikkaus-jquery-style.css}"/>
+    <script th:src="@{/jquery-ui-1.12.1.custom/external/jquery/jquery.js}"></script>
+    <script th:src="@{/jquery-ui-1.12.1.custom/jquery-ui.js}"></script>
+</head>
+<body>
+<p>
+    <a class="show-tooltip" th:href="@{/index.html}"
+       title="Go back to main page">Back to main page</a>
+</p>
+<p>
+    <a class="show-tooltip" th:href="@{/game/getCreate}"
+       title="Create new game">Create a new game</a>
+</p>
+<table>
+    <tr>
+        <th>Tournament name</th>
+        <th>Tournament year</th>
+        <th>Home team name</th>
+        <th>Away team name</th>
+        <th>Home score</th>
+        <th>Away score</th>
+        <th>Game date</th>
+    </tr>
+    <tr th:each="game : ${games}">
+        <td th:text="${game.tournament.name}"/>
+        <td th:text="${game.tournament.year}"/>
+        <td th:text="${game.homeTeam.team.name}"/>
+        <td th:text="${game.awayTeam.team.name}"/>
+        <td th:text="${game.homeScore}"/>
+        <td th:text="${game.awayScore}"/>
+        <td th:text="${game.gameDate}"/>
+        <td><a class="show-tooltip"
+               th:href="@{/game/getDetails(id=${game.id})}"
+               title="Show details of game">Show details</a></td>
+        <td><a class="show-tooltip"
+               th:href="@{/game/getModify(id=${game.id})}"
+               title="Modify details of game">Modify</a></td>
+        <td><a class="show-tooltip"
+               th:href="@{/game/getDelete(id=${game.id})}"
+               title="Delete game">Delete</a></td>
+    </tr>
+</table>
+<script th:src="@{/js/common-navigation.js}"></script>
+</body>
+</html>

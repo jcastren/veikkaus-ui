@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="fi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <title>VEIKKAUS ### Bet result list ###</title>
+    <link rel="stylesheet" th:href="@{/jquery-ui-1.12.1.custom/jquery-ui.css}"/>
+    <link rel="stylesheet" th:href="@{/veikkaus-jquery-style.css}"/>
+    <script th:src="@{/jquery-ui-1.12.1.custom/external/jquery/jquery.js}"></script>
+    <script th:src="@{/jquery-ui-1.12.1.custom/jquery-ui.js}"></script>
+</head>
+<body>
+<p>
+    <a class="show-tooltip" th:href="@{/index.html}"
+       title="Go back to main page">Back to main page</a>
+</p>
+<p>
+    <a class="show-tooltip" th:href="@{/betResult/getCreate}"
+       title="Create new Bet result">Create a new Bet result</a>
+</p>
+<table>
+    <tr>
+        <th>Bet user name</th>
+        <th>Home team</th>
+        <th>Away team</th>
+        <th>Home score</th>
+        <th>Away score</th>
+    </tr>
+    <tr th:each="betResult : ${betResults}">
+        <td th:text="${betResult.bet.user.name}"/>
+        <td th:text="${betResult.game.homeTeam.team.name}"/>
+        <td th:text="${betResult.game.awayTeam.team.name}"/>
+        <td th:text="${betResult.homeScore}"/>
+        <td th:text="${betResult.awayScore}"/>
+        <td><a class="show-tooltip"
+               th:href="@{/betResult/getDetails(id=${betResult.id})}"
+               title="Show details of Bet result">Show details</a></td>
+        <td><a class="show-tooltip"
+               th:href="@{/betResult/getModify(id=${betResult.id})}"
+               title="Modify details of Bet result">Modify</a></td>
+        <td><a class="show-tooltip"
+               th:href="@{/betResult/getDelete(id=${betResult.id})}"
+               title="Delete Bet result">Delete</a></td>
+    </tr>
+</table>
+<script th:src="@{/js/common-navigation.js}"></script>
+</body>
+</html>

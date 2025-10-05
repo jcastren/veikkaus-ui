@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="fi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <title>VEIKKAUS ### Tournament team list ###</title>
+    <link rel="stylesheet" th:href="@{/jquery-ui-1.12.1.custom/jquery-ui.css}"/>
+    <link rel="stylesheet" th:href="@{/veikkaus-jquery-style.css}"/>
+    <script th:src="@{/jquery-ui-1.12.1.custom/external/jquery/jquery.js}"></script>
+    <script th:src="@{/jquery-ui-1.12.1.custom/jquery-ui.js}"></script>
+</head>
+<body>
+<p>
+    <a class="show-tooltip" th:href="@{/index.html}"
+       title="Go back to main page">Back to main page</a>
+</p>
+<p>
+    <a class="show-tooltip" th:href="@{/tournamentTeam/getCreate}"
+       title="Create new tournament team">Create a new tournament team</a>
+</p>
+<table>
+    <tr>
+        <th>Tournament name</th>
+        <th>Tournament year</th>
+        <th>Team name</th>
+    </tr>
+    <tr th:each="tournamentTeam : ${tournamentTeams}">
+        <td th:text="${tournamentTeam.tournament.name}"/>
+        <td th:text="${tournamentTeam.tournament.year}"/>
+        <td th:text="${tournamentTeam.team.name}"/>
+        <td><a class="show-tooltip"
+               th:href="@{/tournamentTeam/getDetails(id=${tournamentTeam.id})}"
+               title="Show details of tournament team">Show details</a></td>
+        <td><a class="show-tooltip"
+               th:href="@{/tournamentTeam/getModify(id=${tournamentTeam.id})}"
+               title="Modify details of tournament team">Modify</a></td>
+        <td><a class="show-tooltip"
+               th:href="@{/tournamentTeam/getDelete(id=${tournamentTeam.id})}"
+               title="Delete tournament team">Delete</a></td>
+    </tr>
+</table>
+<script th:src="@{/js/common-navigation.js}"></script>
+</body>
+</html>

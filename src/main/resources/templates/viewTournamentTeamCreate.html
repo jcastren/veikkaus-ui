@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="fi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <title>VEIKKAUS ### Tournament team create ###</title>
+    <link rel="stylesheet" th:href="@{/jquery-ui-1.12.1.custom/jquery-ui.css}"/>
+    <link rel="stylesheet" th:href="@{/veikkaus-jquery-style.css}"/>
+    <script th:src="@{/jquery-ui-1.12.1.custom/external/jquery/jquery.js}"></script>
+    <script th:src="@{/jquery-ui-1.12.1.custom/jquery-ui.js}"></script>
+</head>
+<body>
+<h1>Create new tournament team</h1>
+<p>
+    <a class="show-tooltip" th:href="@{/tournamentTeam/getAll}"
+       title="Go back to tournament team list">Back to tournament team list</a>
+</p>
+<br/>
+<form action="#" method="post"
+      th:action="@{/tournamentTeam/postCreate}" th:object="${tournamentTeam}">
+    <div>
+        <label class="show-tooltip" title="Select a tournament for the team">Select tournament</label>
+        <select th:field="*{tournament.id}">
+            <option th:each="tournament : ${allTournaments}"
+                    th:text="${tournament.name}" th:value="${tournament.id}">
+            </option>
+        </select>
+    </div>
+    <div>
+        <label class="show-tooltip" title="Select a team to the tournament">Select team</label>
+        <select th:field="*{team.id}">
+            <option th:each="team : ${allTeams}"
+                    th:text="${team.name}" th:value="${team.id}">
+            </option>
+        </select>
+    </div>
+    <p>
+        <button class="show-tooltip ui-button ui-corner-all ui-widget"
+                title="Create tournament team" type="submit">
+            Create tournament team
+        </button>
+        <button class="show-tooltip ui-button ui-corner-all ui-widget"
+                title="Reset fields" type="reset">
+            Reset fields
+        </button>
+    </p>
+</form>
+<script th:src="@{/js/common-navigation.js}"></script>
+</body>
+</html>

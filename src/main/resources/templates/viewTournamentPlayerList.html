@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="fi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <title>VEIKKAUS ### Tournament player list ###</title>
+    <link rel="stylesheet" th:href="@{/jquery-ui-1.12.1.custom/jquery-ui.css}"/>
+    <link rel="stylesheet" th:href="@{/veikkaus-jquery-style.css}"/>
+    <script th:src="@{/jquery-ui-1.12.1.custom/external/jquery/jquery.js}"></script>
+    <script th:src="@{/jquery-ui-1.12.1.custom/jquery-ui.js}"></script>
+</head>
+<body>
+<p>
+    <a class="show-tooltip" th:href="@{/index.html}"
+       title="Go back to main page">Back to main page</a>
+</p>
+<p>
+    <a class="show-tooltip" th:href="@{/tournamentPlayer/getCreate}"
+       title="Create new tournament player">Create a new tournament player</a>
+</p>
+<table>
+    <tr>
+        <th>Tournament name</th>
+        <th>Tournament year</th>
+        <th>Team name</th>
+        <th>Player first name</th>
+        <th>Player's last name</th>
+        <th>Player's goals in this tournament</th>
+    </tr>
+    <tr th:each="tournamentPlayer : ${tournamentPlayers}">
+        <td th:text="${tournamentPlayer.tournamentTeam.tournament.name}"/>
+        <td th:text="${tournamentPlayer.tournamentTeam.tournament.year}"/>
+        <td th:text="${tournamentPlayer.tournamentTeam.team.name}"/>
+        <td th:text="${tournamentPlayer.player.firstName}"/>
+        <td th:text="${tournamentPlayer.player.lastName}"/>
+        <td th:text="${tournamentPlayer.goals}"/>
+        <td><a class="show-tooltip"
+               th:href="@{/tournamentPlayer/getDetails(id=${tournamentPlayer.id})}"
+               title="Show details of tournament player">Show details</a></td>
+        <td><a class="show-tooltip"
+               th:href="@{/tournamentPlayer/getModify(id=${tournamentPlayer.id})}"
+               title="Modify details of tournament player">Modify</a></td>
+        <td><a class="show-tooltip"
+               th:href="@{/tournamentPlayer/getDelete(id=${tournamentPlayer.id})}"
+               title="Delete tournament player">Delete</a></td>
+    </tr>
+</table>
+<script th:src="@{/js/common-navigation.js}"></script>
+</body>
+</html>

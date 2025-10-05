@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="fi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <title>VEIKKAUS ### User create ###</title>
+    <link rel="stylesheet" th:href="@{/jquery-ui-1.12.1.custom/jquery-ui.css}"/>
+    <link rel="stylesheet" th:href="@{/veikkaus-jquery-style.css}"/>
+    <script th:src="@{/jquery-ui-1.12.1.custom/external/jquery/jquery.js}"></script>
+    <script th:src="@{/jquery-ui-1.12.1.custom/jquery-ui.js}"></script>
+</head>
+<body>
+<h1>Create new user</h1>
+<p>
+    <a class="show-tooltip" th:href="@{/user/getAll}"
+       title="Go back to user list">Back to user list</a>
+</p>
+<br/>
+<form action="#" method="post"
+      th:action="@{/user/postCreate}" th:object="${user}">
+    <div>
+        <label class="show-tooltip" title="Select a user role for the user">Select user role</label>
+        <select th:field="*{userRole.id}">
+            <option th:each="userRole : ${allUserRoles}"
+                    th:text="${userRole.name}" th:value="${userRole.id}">
+            </option>
+        </select>
+    </div>
+    <p>
+        Email: <input th:field="*{email}" type="text"/>
+        Name: <input th:field="*{name}" type="text"/>
+        Password: <input th:field="*{password}" type="text"/>
+    </p>
+
+    <p>
+        <button class="show-tooltip ui-button ui-corner-all ui-widget"
+                title="Create user" type="submit">
+            Create user
+        </button>
+        <button class="show-tooltip ui-button ui-corner-all ui-widget"
+                title="Reset fields" type="reset">
+            Reset fields
+        </button>
+    </p>
+</form>
+<script th:src="@{/js/common-navigation.js}"></script>
+</body>
+</html>

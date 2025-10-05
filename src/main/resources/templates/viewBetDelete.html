@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="fi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <title>VEIKKAUS ### Bet confirm delete ###</title>
+    <link rel="stylesheet" th:href="@{/jquery-ui-1.12.1.custom/jquery-ui.css}"/>
+    <link rel="stylesheet" th:href="@{/veikkaus-jquery-style.css}"/>
+    <script th:src="@{/jquery-ui-1.12.1.custom/external/jquery/jquery.js}"></script>
+    <script th:src="@{/jquery-ui-1.12.1.custom/jquery-ui.js}"></script>
+</head>
+<body>
+<h1>Bet delete confirm</h1>
+<p th:text="'Bet user: ' + ${bet.user.name}"/>
+<p th:text="'Bet tournament: ' + ${bet.tournament.name}"/>
+<p th:text="'Bet status: ' + ${bet.status.description}"/>
+<form action="#" method="post"
+      th:action="@{/bet/postDelete}" th:object="${bet}">
+    <input th:field="*{id}" type="hidden"/>
+    <button class="ui-button ui-corner-all ui-widget"
+            title="Confirm deleting of Bet"
+            type="submit">Confirm deleting Bet
+    </button>
+</form>
+<form action="#" method="get"
+      th:action="@{/bet/getAll}" th:object="${bet}">
+    <button class="ui-button ui-corner-all ui-widget"
+            title="Cancel deleting of bet"
+            type="submit">
+        Cancel deleting Bet
+    </button>
+</form>
+<script th:src="@{/js/common-navigation.js}"></script>
+</body>
+</html>

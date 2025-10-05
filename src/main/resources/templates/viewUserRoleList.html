@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="fi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <title>VEIKKAUS ### User role list ###</title>
+    <link rel="stylesheet" th:href="@{/jquery-ui-1.12.1.custom/jquery-ui.css}"/>
+    <link rel="stylesheet" th:href="@{/veikkaus-jquery-style.css}"/>
+    <script th:src="@{/jquery-ui-1.12.1.custom/external/jquery/jquery.js}"></script>
+    <script th:src="@{/jquery-ui-1.12.1.custom/jquery-ui.js}"></script>
+</head>
+<body>
+<p>
+    <a class="showTooltip" th:href="@{/index.html}" title="Go back to main page">Back to main page</a>
+</p>
+<p>
+    <a class="showTooltip" th:href="@{/userRole/getCreate}" title="Create new user role">Create a new user role</a>
+</p>
+<table>
+    <tr>
+        <th>Name</th>
+    </tr>
+    <tr th:each="userRole : ${userRoles}">
+        <td th:text="${userRole.name}"/>
+        <td><a class="showTooltip"
+               th:href="@{/userRole/getDetails(id=${userRole.id})}"
+               title="Show details of user role">Show details</a></td>
+        <td><a class="showTooltip"
+               th:href="@{/userRole/getModify(id=${userRole.id})}"
+               title="Modify details of user role">Modify</a></td>
+        <td><a class="showTooltip"
+               th:href="@{/userRole/getDelete(id=${userRole.id})}"
+               title="Delete user role">Delete</a></td>
+    </tr>
+</table>
+<script th:src="@{/js/common-navigation.js}"></script>
+</body>
+</html>

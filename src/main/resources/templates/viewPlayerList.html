@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="fi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <title>VEIKKAUS ### Player list ###</title>
+    <link rel="stylesheet" th:href="@{/jquery-ui-1.12.1.custom/jquery-ui.css}"/>
+    <link rel="stylesheet" th:href="@{/veikkaus-jquery-style.css}"/>
+    <script th:src="@{/jquery-ui-1.12.1.custom/external/jquery/jquery.js}"></script>
+    <script th:src="@{/jquery-ui-1.12.1.custom/jquery-ui.js}"></script>
+</head>
+<body>
+<p>
+    <a id="tooltipIndex" th:href="@{/index.html}" title="Go back to main page">Back to main page</a>
+</p>
+<p>
+    <a id="tooltipCreate" th:href="@{/player/getCreate}" title="Create new player">Create a new player</a>
+</p>
+<table>
+    <tr>
+        <th>First name</th>
+        <th>Last name</th>
+    </tr>
+    <tr th:each="player : ${players}">
+        <td th:text="${player.firstName}"/>
+        <td th:text="${player.lastName}"/>
+        <td><a class="show-tooltip"
+               th:href="@{/player/getDetails(id=${player.id})}"
+               title="Show details of player">Show details</a></td>
+        <td><a class="show-tooltip"
+               th:href="@{/player/getModify(id=${player.id})}"
+               title="Modify details of player">Modify</a></td>
+        <td><a class="show-tooltip"
+               th:href="@{/player/getDelete(id=${player.id})}"
+               title="Delete player">Delete</a></td>
+    </tr>
+</table>
+<script th:src="@{/js/common-navigation.js}"></script>
+</body>
+</html>

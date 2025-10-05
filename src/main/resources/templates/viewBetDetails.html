@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="fi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <title>VEIKKAUS ### Bet details ###</title>
+    <link rel="stylesheet" th:href="@{/jquery-ui-1.12.1.custom/jquery-ui.css}"/>
+    <link rel="stylesheet" th:href="@{/veikkaus-jquery-style.css}"/>
+    <script th:src="@{/jquery-ui-1.12.1.custom/external/jquery/jquery.js}"></script>
+    <script th:src="@{/jquery-ui-1.12.1.custom/jquery-ui.js}"></script>
+    <script>
+        $(document).ready(function () {
+            console.log("document ready");
+            $('button[id="button-modify"]').show();
+            $('button[id="button-save"]').hide();
+            $('button[id="button-cancel"]').hide();
+            $('td[id="homeScoreEditable"]').hide();
+            $('td[id="awayScoreEditable"]').hide();
+
+            $('button[name="modify"]').click(function () {
+                $('button[id="button-modify"]').hide(); <!-- Hiding all Modify buttons -->
+                $(this).parent().find('#button-save').show(); <!-- Showing Save button on this row. -->
+                $(this).parent().find('#button-cancel').show(); <!-- Showing Cancel button on this row. -->
+                <!-- Hiding score read only fields on this row-->
+                $(this).parent().parent().find('#homeScoreReadOnly').hide();
+                $(this).parent().parent().find('#awayScoreReadOnly').hide();
+                <!-- Showing score editable fields on this row-->
+                $(this).parent().parent().find('#homeScoreEditable').show();
+                $(this).parent().parent().find('#awayScoreEditable').show();
+            });
+
+            $('button[name="cancel"]').click(function () {
+                $('button[id="button-modify"]').show(); <!-- Showing all modify buttons -->
+                $('button[id="button-save"]').hide(); <!-- Hiding all save buttons -->
+                $('button[id="button-cancel"]').hide(); <!-- Hiding all Cancel buttons -->
+                <!-- Showing score read only fields -->
+                $('td[id="homeScoreReadOnly"]').show();
+                $('td[id="awayScoreReadOnly"]').show();
+                <!-- Hiding score editable fields -->
+                $('td[id="homeScoreEditable"]').hide();
+                $('td[id="awayScoreEditable"]').hide();
+            });
+        });
+    </script>
+
+</head>
+<body>
+<h1>Details</h1>
+<p>
+    <a class="show-tooltip" th:href="@{/bet/getAll}"
+       title="Go back to bet list">Back to Bet list</a>
+</p>
+<br/>
+<p th:text="'User name: ' + ${bet.user.name}"/>
+<p th:text="'Tournament name: ' + ${bet.tournament.name}"/>
+<p th:text="'Status: ' + ${bet.status.description}"/>
+
+<table>
+    <tr>
+        <th>Date</th>
+        <th>Home team</th>
+        <th>Away team</th>
+        <th>Home score</th>
+        <th>Away score</th>
+    </tr>
+
+    <!--    <tr th:each="betResult, i : ${betResults}">-->
+    <tr th:each="betResult : ${betResults}">
+        <form action="#" method="post" th:action="@{/bet/postBetResultSave}" th:object="${betResult}">
+            <input id="id" name="id" th:value="*{id}" type="hidden"/>
+            <input id="bet.id" name="bet.id" th:value="*{bet.id}" type="hidden"/>
+            <input id="game.id" name="game.id" th:value="*{game.id}" type="hidden"/>
+
+            <td th:field="*{game.gameDate}" th:text="*{game.gameDate}"/>
+            <td th:field="*{game.homeTeam.team.name}" th:text="*{game.homeTeam.team.name}"/>
+            <td th:field="*{game.awayTeam.team.name}" th:text="*{game.awayTeam.team.name}"/>
+
+            <td id="homeScoreReadOnly" th:field="*{homeScore}" th:text="(*{homeScore} == '-999') ? '' : *{homeScore}"/>
+
+            <td id="homeScoreEditable">
+                <input name="homeScore" th:value="(*{homeScore} == '-999') ? '' : *{homeScore}" type="text">
+                <!--                <input type="text" th:value="(*{homeScore} == '-999') ? '' : *{homeScore}" name="homeScore" th:errorclass="fieldError">-->
+                <!--                <div th:if="${#fields.hasErrors('homeScore')}" th:errors="*{betResults[__${i.index}__].homeScore}">Home score Error</div>-->
+            </td>
+            <!--            <td th:if="${#fields.hasErrors('homeScore')}" th:errors="${betResults[__${i.index}__].homeScore}">Home score Error</td>-->
+
+            <td id="awayScoreReadOnly" th:field="*{awayScore}" th:text="(*{awayScore} == '-999') ? '' : *{awayScore}"/>
+
+            <td id="awayScoreEditable">
+                <input id="awayScore" name="awayScore" th:value="(*{awayScore} == '-999') ? '' : *{awayScore}"
+                       type="text">
+            </td>
+
+            <td id="td-modify">
+                <button class="show-tooltip ui-button ui-corner-all ui-widget"
+                        id="button-modify"
+                        name="modify"
+                        type="button">
+                    Modify
+                </button>
+                <button class="show-tooltip ui-button ui-corner-all ui-widget"
+                        id="button-save"
+                        name="save"
+                        type="submit">
+                    Save
+                </button>
+                <button class="show-tooltip ui-button ui-corner-all ui-widget"
+                        id="button-cancel"
+                        name="cancel"
+                        type="button">
+                    Cancel
+                </button>
+            </td>
+        </form>
+    </tr>
+</table>
+
+<script th:src="@{/js/common-navigation.js}"></script>
+</body>
+</html>

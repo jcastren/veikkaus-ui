@@ -1,0 +1,10 @@
+<th:block th:fragment="tournamentSelectFragment" th:object="${tournament}"
+          xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <label class="show-tooltip" id="lblTournament" title="Select a tournament">Select tournament</label>
+    <select id="selTournament" th:field="*{id}">
+        <option th:each="selectedTournament : ${allTournaments}"
+                th:text="${selectedTournament.name} + ' ' + ${selectedTournament.year}"
+                th:value="${selectedTournament.id}">
+        </option>
+    </select>
+</th:block>

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="fi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <title>VEIKKAUS ### Bet result create ###</title>
+    <link rel="stylesheet" th:href="@{/jquery-ui-1.12.1.custom/jquery-ui.css}"/>
+    <link rel="stylesheet" th:href="@{/veikkaus-jquery-style.css}"/>
+    <script th:src="@{/jquery-ui-1.12.1.custom/external/jquery/jquery.js}"></script>
+    <script th:src="@{/jquery-ui-1.12.1.custom/jquery-ui.js}"></script>
+</head>
+<body>
+<h1>Create new Bet result</h1>
+<p>
+    <a class="show-tooltip" th:href="@{/betResult/getAll}"
+       title="Go back to Bet result list">Back to Bet result list</a>
+</p>
+<br/>
+<form action="#" method="post"
+      th:action="@{/betResult/postCreate}" th:object="${betResult}">
+    <div>
+        <label class="show-tooltip" title="Select a bet for the bet result">Select bet</label>
+        <select th:field="*{bet.id}">
+            <option th:each="bet : ${allBets}"
+                    th:text="${bet.user.name}" th:value="${bet.id}">
+            </option>
+        </select>
+    </div>
+    <div>
+        <label class="show-tooltip" title="Select a game to the Bet result">Select game</label>
+        <select th:field="*{game.id}">
+            <option th:each="game : ${allGames}"
+                    th:text="${game.homeTeam.team.name} + ' - ' + ${game.awayTeam.team.name}" th:value="${game.id}">
+            </option>
+        </select>
+    </div>
+    <p>
+        Home team score: <input th:field="*{homeScore}" type="text"/>
+    </p>
+    <p>
+        Away team score: <input th:field="*{awayScore}" type="text"/>
+    </p>
+
+    <p>
+        <button class="show-tooltip ui-button ui-corner-all ui-widget"
+                title="Create Bet result" type="submit">
+            Create Bet result
+        </button>
+        <button class="show-tooltip ui-button ui-corner-all ui-widget"
+                title="Reset fields" type="reset">
+            Reset fields
+        </button>
+    </p>
+</form>
+<script th:src="@{/js/common-navigation.js}"></script>
+</body>
+</html>

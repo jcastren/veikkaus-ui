@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="fi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <title>VEIKKAUS ### Tournament player details ###</title>
+    <link rel="stylesheet" th:href="@{/jquery-ui-1.12.1.custom/jquery-ui.css}"/>
+    <link rel="stylesheet" th:href="@{/veikkaus-jquery-style.css}"/>
+    <script th:src="@{/jquery-ui-1.12.1.custom/external/jquery/jquery.js}"></script>
+    <script th:src="@{/jquery-ui-1.12.1.custom/jquery-ui.js}"></script>
+</head>
+<body>
+<h1>Details</h1>
+<p>
+    <a class="show-tooltip" th:href="@{/tournamentPlayer/getAll}"
+       title="Go back to tournament team list">Back to tournament player list</a>
+</p>
+<br/>
+<p th:text="'Tournament name: ' + ${tournamentPlayer.tournamentTeam.tournament.name}"/>
+<p th:text="'Tournament year: ' + ${tournamentPlayer.tournamentTeam.tournament.year}"/>
+<p th:text="'Tournament team name: ' + ${tournamentPlayer.tournamentTeam.team.name}"/>
+<p th:text="'Tournament player name: ' + ${tournamentPlayer.player.firstName} + ' ' + ${tournamentPlayer.player.lastName}"/>
+<p th:text="'Player goals in this tournament: ' + ${tournamentPlayer.goals}"/>
+<script th:src="@{/js/common-navigation.js}"></script>
+</body>
+</html>

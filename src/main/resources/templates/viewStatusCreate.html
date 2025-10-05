@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="fi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <title>VEIKKAUS ### Status create ###</title>
+    <link rel="stylesheet" th:href="@{/jquery-ui-1.12.1.custom/jquery-ui.css}"/>
+    <link rel="stylesheet" th:href="@{/veikkaus-jquery-style.css}"/>
+    <script th:src="@{/jquery-ui-1.12.1.custom/external/jquery/jquery.js}"></script>
+    <script th:src="@{/jquery-ui-1.12.1.custom/jquery-ui.js}"></script>
+</head>
+<body>
+<h1>Create new status</h1>
+<p>
+    <a id="tooltipList" th:href="@{/status/getAll}" title="Go back to status list">Back to status list</a>
+</p>
+<br/>
+
+<form action="#" method="post" th:action="@{/status/postCreate}" th:object="${status}">
+    <table>
+
+        <tr>
+            <td>Status number:</td>
+            <td><input th:field="*{statusNumber}" type="number"/></td>
+            <td th:errors="*{statusNumber}" th:if="${#fields.hasErrors('statusNumber')}">Status Error</td>
+        </tr>
+        <tr>
+            <td>Description:</td>
+            <td><input th:field="*{description}" type="text"/></td>
+            <td th:errors="*{description}" th:if="${#fields.hasErrors('description')}">Description Error</td>
+        </tr>
+        <tr>
+            <td>
+                <button class="show-tooltip ui-button ui-corner-all ui-widget"
+                        title="Create status" type="submit">Create status
+                </button>
+            </td>
+            <td>
+                <button class="show-tooltip ui-button ui-corner-all ui-widget"
+                        title="Reset fields" type="reset">Reset fields
+                </button>
+            </td>
+        </tr>
+    </table>
+
+</form>
+<script th:src="@{/js/common-navigation.js}"></script>
+</body>
+</html>

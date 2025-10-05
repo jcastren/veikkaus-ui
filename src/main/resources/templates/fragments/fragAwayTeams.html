@@ -1,0 +1,10 @@
+<th:block th:fragment="awayTeamFragment" xmlns="http://www.w3.org/1999/xhtml"
+          xmlns:th="http://www.thymeleaf.org">
+    <label class="show-tooltip" id="lblAwayTeamList" title="Select an away team for the game">Select away team</label>
+    <select id="awayTeamSelect" th:field="*{awayTeam.id}">
+        <option th:each="awayTeamEntry : ${awayTeamList}"
+                th:text="${awayTeamEntry.tournament.name} + ' ' + ${awayTeamEntry.tournament.year} + '/' + ${awayTeamEntry.team.name}"
+                th:value="${awayTeamEntry.id}">
+        </option>
+    </select>
+</th:block>

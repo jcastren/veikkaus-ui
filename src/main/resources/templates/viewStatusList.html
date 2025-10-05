@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="fi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <title>VEIKKAUS ### Status list ###</title>
+    <link rel="stylesheet" th:href="@{/jquery-ui-1.12.1.custom/jquery-ui.css}"/>
+    <link rel="stylesheet" th:href="@{/veikkaus-jquery-style.css}"/>
+    <script th:src="@{/jquery-ui-1.12.1.custom/external/jquery/jquery.js}"></script>
+    <script th:src="@{/jquery-ui-1.12.1.custom/jquery-ui.js}"></script>
+</head>
+<body>
+<p>
+    <a id="tooltipIndex" th:href="@{/index.html}" title="Go back to main page">Back to main page</a>
+</p>
+<p>
+    <a id="tooltipCreate" th:href="@{/status/getCreate}" title="Create new status">Create a new status</a>
+</p>
+<table>
+    <tr>
+        <th>Status number</th>
+        <th>Status description</th>
+    </tr>
+    <tr th:each="status : ${statuses}">
+        <td th:text="${status.statusNumber}"/>
+        <td th:text="${status.description}"/>
+        <td><a class="show-tooltip"
+               th:href="@{/status/getDetails(id=${status.id})}"
+               title="Show details of status">Show details</a></td>
+        <td><a class="show-tooltip"
+               th:href="@{/status/getModify(id=${status.id})}"
+               title="Modify details of status">Modify</a></td>
+        <td><a class="show-tooltip"
+               th:href="@{/status/getDelete(id=${status.id})}"
+               title="Delete status">Delete</a></td>
+    </tr>
+</table>
+<script th:src="@{/js/common-navigation.js}"></script>
+</body>
+</html>
