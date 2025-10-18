@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .navigation_item {
+    @apply text-gray-900 hover:text-gray-500;
+  }
+}

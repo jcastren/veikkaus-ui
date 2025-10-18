@@ -1,13 +1,17 @@
-import './App.css'
+import { Route } from 'wouter';
+import './App.css';
+import NavigationBar from './navigation/NavigationBar';
+import TournamentList from './tournaments/TournamentList';
+import TeamList from "./teams/TeamList.js";
 
 function App() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <h1 className="text-4xl font-bold text-blue-600">
-        🚀 Tailwind + Vite + React works!
-      </h1>
+    <div>
+      <NavigationBar />
+      <Route path="/tournaments" component={TournamentList} />
+      <Route path="/teams" component={TeamList} />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
