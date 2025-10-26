@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 import type { Team } from "../common/teams.js"
+import { Header } from "../components/Header.js"
 
-const TeamList: React.FC = () => {
+function TeamList() {
   const [teams, setTeams] = useState<Team[] | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
-
-  console.log('TeamList component')
 
   useEffect(() => {
     const fetchTeams = async () => {
@@ -38,18 +37,18 @@ const TeamList: React.FC = () => {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Teams</h1>
+      <Header header="Teams" />
 
-      {/* Render a list if teams exist and the array is not empty */}
-      {teams && teams && teams.length > 0 ? (
-        <ul className="space-y-2">
-          {/* Map over the teams array to create list items */}
+      {/* Render a container for the list if teams exist and the array is not empty */}
+      {teams && teams.length > 0 ? (
+        <div className="space-y-2">
+          {/* Map over the teams array to create div elements for each team */}
           {teams.map((team: Team) => (
-            <li key={team.id} className="p-2 border rounded shadow-sm">
+            <div key={team.id} className="p-2 border rounded shadow-sm">
               {team.name}
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       ) : (
         // Render a message if there are no teams
         <p>No teams found.</p>
