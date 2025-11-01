@@ -9,6 +9,13 @@ import { ListSaveButton } from "../components/ListSaveButton.js"
 import { ListCancelButton } from "../components/ListCancelButton.js"
 import { Loading } from "../components/Loading.js"
 import { DataList } from "../components/DataList.js"
+import { ListHeaderRow, type Header as HeaderType } from "../components/ListHeaderRow.js"
+
+// Define column headers and their widths
+const listHeaders: HeaderType[] = [
+  { text: "Name", className: "w-3/4" },
+  { text: "Year", className: "w-1/4" },
+]
 
 export default function TournamentList() {
   const [tournaments, setTournaments] = useState<Tournament[] | null>(null)
@@ -79,7 +86,7 @@ export default function TournamentList() {
         <>
           <ListCreateButton buttonText="Create Tournament">
             {(onCancel) => (
-              <div className="p-4 border rounded bg-gray-50 flex items-center gap-2">
+              <div className="p-4 border rounded bg-gray-50 flex items-center text-left gap-2">
                 <InputField
                   value={newTournamentName}
                   onChange={(e) => setNewTournamentName(e.target.value)}
@@ -98,18 +105,19 @@ export default function TournamentList() {
             )}
           </ListCreateButton>
 
+          <ListHeaderRow headers={listHeaders} actionsHeaderText="Actions" />
           <DataList<Tournament>
             items={tournaments}
             getItemUrl={(tournament) => `/tournaments/${tournament.id}`}
             noItemsText="No tournaments found."
-            renderItem={(tournament) => (
-              <div className="flex justify-between items-center">
-                <div className="flex gap-4">
-                  <span>{tournament.name}</span>
-                  <span>{tournament.year}</span>
-                </div>
-                <ListDeleteButton onClick={(event) => handleDelete(tournament.id, event)} />
+            renderMainContent={(tournament) => (
+              <div className="flex-grow flex items-center text-left gap-4">
+                <div className="w-3/4">{tournament.name}</div>
+                <div className="w-1/4">{tournament.year}</div>
               </div>
+            )}
+            renderActions={(tournament) => (
+              <ListDeleteButton onClick={(event) => handleDelete(tournament.id, event)} />
             )}
           />
         </>

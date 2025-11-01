@@ -9,6 +9,12 @@ import { ListSaveButton } from "../components/ListSaveButton.js"
 import { ListCancelButton } from "../components/ListCancelButton.js"
 import { Loading } from "../components/Loading.js"
 import { DataList } from "../components/DataList.js"
+import { ListHeaderRow, type Header as HeaderType } from "../components/ListHeaderRow.js"
+
+// Define column headers and their widths
+const listHeaders: HeaderType[] = [
+  { text: "Name", className: "w-full" },
+]
 
 export default function TeamList() {
   const [teams, setTeams] = useState<Team[] | null>(null)
@@ -77,7 +83,7 @@ export default function TeamList() {
         <>
           <ListCreateButton buttonText="Create Team">
             {(onCancel) => (
-              <div className="p-4 border rounded bg-gray-50 flex items-center gap-2">
+              <div className="p-4 border rounded bg-gray-50 flex items-center text-left gap-2">
                 <InputField
                   value={newTeamName}
                   onChange={(e) => setNewTeamName(e.target.value)}
@@ -90,15 +96,18 @@ export default function TeamList() {
             )}
           </ListCreateButton>
 
+          <ListHeaderRow headers={listHeaders} actionsHeaderText="Actions" />
           <DataList<Team>
             items={teams}
             getItemUrl={(team) => `/teams/${team.id}`}
             noItemsText="No teams found."
-            renderItem={(team) => (
-              <div className="flex justify-between items-center">
-                <span>{team.name}</span>
-                <ListDeleteButton onClick={(event) => handleDelete(team.id, event)} />
+            renderMainContent={(team) => (
+              <div className="flex-grow flex items-center text-left gap-4">
+                <div className="w-full">{team.name}</div>
               </div>
+            )}
+            renderActions={(team) => (
+              <ListDeleteButton onClick={(event) => handleDelete(team.id, event)} />
             )}
           />
         </>
