@@ -3,6 +3,7 @@ import axios from 'axios'
 import { Link, useRoute, useLocation } from 'wouter'
 import type { Team as TeamType } from '../common/teams.js'
 import { DataRow } from "../components/DataRow.js"
+import { CrudButtons } from "../components/CrudButtons.js" // Import the new component
 
 function Team() {
   const [team, setTeam] = useState<TeamType | null>(null)
@@ -92,7 +93,7 @@ function Team() {
     <div className="p-4">
       <div className="flex flex-col space-y-4 text-left">
         <DataRow caption="Id" value={team!.id.toString()} />
-        <DataRow
+        <DataRow 
           caption="Name" 
           value={isEditing ? editedName : team!.name} 
           isEditable={isEditing} 
@@ -100,27 +101,14 @@ function Team() {
         />
       </div>
 
-      <div className="mt-4 flex gap-2">
-        {isEditing ? (
-          <>
-            <button onClick={handleSave} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-              Save
-            </button>
-            <button onClick={handleCancel} className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">
-              Cancel
-            </button>
-          </>
-        ) : (
-          <>
-            <button onClick={() => setIsEditing(true)} className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">
-              Edit
-            </button>
-            <button onClick={handleDelete} className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
-              Delete
-            </button>
-          </>
-        )}
-      </div>
+      {/* Use the new CrudButtons component */}
+      <CrudButtons
+        isEditing={isEditing}
+        onEdit={() => setIsEditing(true)}
+        onSave={handleSave}
+        onCancel={handleCancel}
+        onDelete={handleDelete}
+      />
 
       <div className="mt-8">
         <Link href="/teams" className="text-blue-500 hover:underline">
