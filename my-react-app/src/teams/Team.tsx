@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Link, useRoute, useLocation } from 'wouter'
 import type { Team as TeamType } from '../common/teams.js'
-import { Header } from '../components/Header.js'
+import { DataRow } from "../components/DataRow.js"
 
 function Team() {
   const [team, setTeam] = useState<TeamType | null>(null)
@@ -90,21 +90,9 @@ function Team() {
 
   return (
     <div className="p-4">
-      <div className="flex items-center gap-4 mb-4">
-        {isEditing ? (
-          <input
-            type="text"
-            value={editedName}
-            onChange={(e) => setEditedName(e.target.value)}
-            className="text-2xl font-bold p-2 border rounded"
-          />
-        ) : (
-          <Header header={team!.name} />
-        )}
-      </div>
-
-      <div className="space-y-2">
-        <p><span className="font-bold">ID:</span> {team!.id}</p>
+      <div className="flex flex-col space-y-4 text-left">
+        <DataRow caption="Id" value={team!.id.toString()} />
+        <DataRow caption="Name" value={team!.name} isEditable={isEditing} setValue={setEditedName} />
       </div>
 
       <div className="mt-4 flex gap-2">
