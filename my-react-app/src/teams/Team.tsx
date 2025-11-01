@@ -5,7 +5,7 @@ import type { Team as TeamType } from '../common/teams.js'
 import { DataRow } from "../components/DataRow.js"
 import { CrudButtons } from "../components/CrudButtons.js" // Import the new component
 
-function Team() {
+export default function Team() {
   const [team, setTeam] = useState<TeamType | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
@@ -118,5 +118,3 @@ function Team() {
     </div>
   )
 }
-
-export default Team

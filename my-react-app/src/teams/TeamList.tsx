@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Link } from 'wouter'
-import type { Team } from "../common/teams.js"
-import { Header } from "../components/Header.js"
+import type { Team } from "../common/teams.ts"
+import { Header } from "../components/Header.tsx"
 
-function TeamList() {
+export default function TeamList() {
   const [teams, setTeams] = useState<Team[] | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
-
   const [isCreating, setIsCreating] = useState(false)
   const [newTeamName, setNewTeamName] = useState("")
 
@@ -123,5 +122,3 @@ function TeamList() {
     </div>
   )
 }
-
-export default TeamList
