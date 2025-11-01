@@ -32,7 +32,7 @@ function Team() {
           setLoading(false)
         }
       }
-      fetchTeam()
+      void fetchTeam()
     }
   }, [params?.id])
 
@@ -92,7 +92,12 @@ function Team() {
     <div className="p-4">
       <div className="flex flex-col space-y-4 text-left">
         <DataRow caption="Id" value={team!.id.toString()} />
-        <DataRow caption="Name" value={team!.name} isEditable={isEditing} setValue={setEditedName} />
+        <DataRow
+          caption="Name" 
+          value={isEditing ? editedName : team!.name} 
+          isEditable={isEditing} 
+          onValueChange={setEditedName} 
+        />
       </div>
 
       <div className="mt-4 flex gap-2">

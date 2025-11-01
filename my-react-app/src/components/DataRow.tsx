@@ -1,14 +1,14 @@
-interface DataRowProps<T> {
+interface DataRowProps {
   caption: string
   value: string
   isEditable?: boolean
-  setValue?: React.Dispatch<React.SetStateAction<T>>
+  onValueChange?: (newValue: string) => void
 }
 
-export function DataRow<T>({ caption, value, isEditable, setValue }: DataRowProps<T>) {
+export function DataRow({ caption, value, isEditable, onValueChange }: DataRowProps) {
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value as T
-    setValue?.(newValue)
+    onValueChange?.(e.target.value)
   }
 
   return (
