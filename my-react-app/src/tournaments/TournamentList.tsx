@@ -3,6 +3,7 @@ import axios from 'axios'
 import { Link } from 'wouter'
 import type { Tournament } from "../common/tournaments.ts"
 import { Header } from "../components/Header.js"
+import { ListDeleteButton } from "../components/ListDeleteButton.js"
 
 export default function TournamentList() {
   const [tournaments, setTournaments] = useState<Tournament[] | null>(null)
@@ -30,12 +31,8 @@ export default function TournamentList() {
   }, [])
 
   const handleCreate = async () => {
-    if (!newTournamentName.trim()) {
-      alert("Tournament name cannot be empty.")
-      return
-    }
-    if (!newTournamentYear.trim()) {
-      alert("Tournament year cannot be empty.")
+    if (!newTournamentName.trim() || !newTournamentYear.trim()) {
+      alert("Tournament name and year cannot be empty.")
       return
     }
     try {
@@ -99,8 +96,8 @@ export default function TournamentList() {
                   type="text"
                   value={newTournamentYear}
                   onChange={(e) => setNewTournamentYear(e.target.value)}
-                  placeholder="New tournament year"
-                  className="p-2 border rounded w-full"
+                  placeholder="Year"
+                  className="p-2 border rounded w-1/4"
                 />
                 <button onClick={handleCreate} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
                   Save
@@ -119,12 +116,7 @@ export default function TournamentList() {
                   <div className="p-2 border rounded shadow-sm cursor-pointer hover:bg-gray-100 flex justify-between items-center">
                     <span>{tournament.name}</span>
                     <span>{tournament.year}</span>
-                    <button
-                      onClick={(event) => handleDelete(tournament.id, event)}
-                      className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
-                    >
-                      Delete
-                    </button>
+                    <ListDeleteButton onClick={(event) => handleDelete(tournament.id, event)} />
                   </div>
                 </Link>
               ))}

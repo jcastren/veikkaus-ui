@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Link } from 'wouter'
-import type { Team } from "../common/teams.ts"
-import { Header } from "../components/Header.tsx"
+import type { Team } from "../common/teams.js"
+import { Header } from "../components/Header.js"
+import { ListCreateButton } from "../components/ListCreateButton.js"
+import { ListDeleteButton } from "../components/ListDeleteButton.js"
 
 export default function TeamList() {
   const [teams, setTeams] = useState<Team[] | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
-  const [isCreating, setIsCreating] = useState(false)
-  const [newTeamName, setNewTeamName] = useState("")
 
   const fetchTeams = async () => {
     try {
@@ -28,24 +28,8 @@ export default function TeamList() {
     void fetchTeams()
   }, [])
 
-  const handleCreate = async () => {
-    if (!newTeamName.trim()) {
-      alert("Team name cannot be empty.")
-      return
-    }
-    try {
-      const response = await axios.post<Team>('http://localhost:8080/api/v2/teams', { name: newTeamName })
-      setTeams(currentTeams => [...(currentTeams || []), response.data])
-      setNewTeamName("")
-      setIsCreating(false)
-    } catch (err) {
-      setError('Failed to create team')
-    }
-  }
-
-  const handleCancelCreate = () => {
-    setNewTeamName("")
-    setIsCreating(false)
+  const handleTeamCreated = (newTeam: Team) => {
+    setTeams(currentTeams => [...(currentTeams || []), newTeam])
   }
 
   const handleDelete = async (teamId: number, event: React.MouseEvent) => {
@@ -70,33 +54,18 @@ export default function TeamList() {
   return (
     <div className="p-4">
       <Header header="Teams" />
+
       {loading && <p>Loading teams...</p>}
       {error && <p className="text-red-500">Error: {error}</p>}
+
       {!loading && !error && (
         <>
-          <div className="mb-4">
-            {!isCreating ? (
-              <button onClick={() => setIsCreating(true)} className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
-                Create Team
-              </button>
-            ) : (
-              <div className="p-4 border rounded bg-gray-50 flex items-center gap-2">
-                <input
-                  type="text"
-                  value={newTeamName}
-                  onChange={(e) => setNewTeamName(e.target.value)}
-                  placeholder="New team name"
-                  className="p-2 border rounded w-full"
-                />
-                <button onClick={handleCreate} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-                  Save
-                </button>
-                <button onClick={handleCancelCreate} className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">
-                  Cancel
-                </button>
-              </div>
-            )}
-          </div>
+          <ListCreateButton<Team>
+            onCreate={handleTeamCreated}
+            apiUrl="http://localhost:8080/api/v2/teams"
+            placeholderText="New team name"
+            buttonText="Create Team"
+          />
 
           {teams && teams.length > 0 ? (
             <div className="space-y-2">
@@ -104,12 +73,7 @@ export default function TeamList() {
                 <Link key={team.id} href={`/teams/${team.id}`}>
                   <div className="p-2 border rounded shadow-sm cursor-pointer hover:bg-gray-100 flex justify-between items-center">
                     <span>{team.name}</span>
-                    <button
-                      onClick={(event) => handleDelete(team.id, event)}
-                      className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
-                    >
-                      Delete
-                    </button>
+                    <ListDeleteButton onClick={(event) => handleDelete(team.id, event)} />
                   </div>
                 </Link>
               ))}
