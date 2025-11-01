@@ -1,15 +1,20 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { Link } from 'wouter'
 import type { Team } from "../common/teams.js"
 import { Header } from "../components/Header.js"
 import { ListCreateButton } from "../components/ListCreateButton.js"
 import { ListDeleteButton } from "../components/ListDeleteButton.js"
+import { InputField } from "../components/InputField.js"
+import { ListSaveButton } from "../components/ListSaveButton.js"
+import { ListCancelButton } from "../components/ListCancelButton.js"
+import { Loading } from "../components/Loading.js"
+import { DataList } from "../components/DataList.js"
 
 export default function TeamList() {
   const [teams, setTeams] = useState<Team[] | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
+  const [newTeamName, setNewTeamName] = useState("")
 
   const fetchTeams = async () => {
     try {
@@ -28,8 +33,19 @@ export default function TeamList() {
     void fetchTeams()
   }, [])
 
-  const handleTeamCreated = (newTeam: Team) => {
-    setTeams(currentTeams => [...(currentTeams || []), newTeam])
+  const handleCreate = async (onCancel: () => void) => {
+    if (!newTeamName.trim()) {
+      alert("Team name cannot be empty.")
+      return
+    }
+    try {
+      const response = await axios.post<Team>('http://localhost:8080/api/v2/teams', { name: newTeamName })
+      setTeams(currentTeams => [...(currentTeams || []), response.data])
+      setNewTeamName("")
+      onCancel()
+    } catch (err) {
+      setError('Failed to create team')
+    }
   }
 
   const handleDelete = async (teamId: number, event: React.MouseEvent) => {
@@ -55,32 +71,36 @@ export default function TeamList() {
     <div className="p-4">
       <Header header="Teams" />
 
-      {loading && <p>Loading teams...</p>}
-      {error && <p className="text-red-500">Error: {error}</p>}
+      <Loading loading={loading} error={error} />
 
       {!loading && !error && (
         <>
-          <ListCreateButton<Team>
-            onCreate={handleTeamCreated}
-            apiUrl="http://localhost:8080/api/v2/teams"
-            placeholderText="New team name"
-            buttonText="Create Team"
-          />
+          <ListCreateButton buttonText="Create Team">
+            {(onCancel) => (
+              <div className="p-4 border rounded bg-gray-50 flex items-center gap-2">
+                <InputField
+                  value={newTeamName}
+                  onChange={(e) => setNewTeamName(e.target.value)}
+                  placeholder="New team name"
+                  className="w-full"
+                />
+                <ListSaveButton onClick={() => handleCreate(onCancel)} />
+                <ListCancelButton onClick={onCancel} />
+              </div>
+            )}
+          </ListCreateButton>
 
-          {teams && teams.length > 0 ? (
-            <div className="space-y-2">
-              {teams.map((team: Team) => (
-                <Link key={team.id} href={`/teams/${team.id}`}>
-                  <div className="p-2 border rounded shadow-sm cursor-pointer hover:bg-gray-100 flex justify-between items-center">
-                    <span>{team.name}</span>
-                    <ListDeleteButton onClick={(event) => handleDelete(team.id, event)} />
-                  </div>
-                </Link>
-              ))}
-            </div>
-          ) : (
-            <p>No teams found.</p>
-          )}
+          <DataList<Team>
+            items={teams}
+            getItemUrl={(team) => `/teams/${team.id}`}
+            noItemsText="No teams found."
+            renderItem={(team) => (
+              <div className="flex justify-between items-center">
+                <span>{team.name}</span>
+                <ListDeleteButton onClick={(event) => handleDelete(team.id, event)} />
+              </div>
+            )}
+          />
         </>
       )}
     </div>

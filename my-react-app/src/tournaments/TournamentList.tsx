@@ -1,15 +1,19 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { Link } from 'wouter'
 import type { Tournament } from "../common/tournaments.ts"
 import { Header } from "../components/Header.js"
+import { ListCreateButton } from "../components/ListCreateButton.js"
 import { ListDeleteButton } from "../components/ListDeleteButton.js"
+import { InputField } from "../components/InputField.js"
+import { ListSaveButton } from "../components/ListSaveButton.js"
+import { ListCancelButton } from "../components/ListCancelButton.js"
+import { Loading } from "../components/Loading.js"
+import { DataList } from "../components/DataList.js"
 
 export default function TournamentList() {
   const [tournaments, setTournaments] = useState<Tournament[] | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
-  const [isCreating, setIsCreating] = useState(false)
   const [newTournamentName, setNewTournamentName] = useState("")
   const [newTournamentYear, setNewTournamentYear] = useState("")
 
@@ -30,7 +34,7 @@ export default function TournamentList() {
     void fetchTournaments()
   }, [])
 
-  const handleCreate = async () => {
+  const handleCreate = async (onCancel: () => void) => {
     if (!newTournamentName.trim() || !newTournamentYear.trim()) {
       alert("Tournament name and year cannot be empty.")
       return
@@ -40,16 +44,10 @@ export default function TournamentList() {
       setTournaments(currentTournaments => [...(currentTournaments || []), response.data])
       setNewTournamentName("")
       setNewTournamentYear("")
-      setIsCreating(false)
+      onCancel()
     } catch (err) {
       setError('Failed to create tournament')
     }
-  }
-
-  const handleCancelCreate = () => {
-    setNewTournamentName("")
-    setNewTournamentYear("")
-    setIsCreating(false)
   }
 
   const handleDelete = async (tournamentId: number, event: React.MouseEvent) => {
@@ -74,56 +72,46 @@ export default function TournamentList() {
   return (
     <div className="p-4">
       <Header header="Tournaments" />
-      {loading && <p>Loading tournaments...</p>}
-      {error && <p className="text-red-500">Error: {error}</p>}
+
+      <Loading loading={loading} error={error} />
+
       {!loading && !error && (
         <>
-          <div className="mb-4">
-            {!isCreating ? (
-              <button onClick={() => setIsCreating(true)} className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
-                Create Tournament
-              </button>
-            ) : (
+          <ListCreateButton buttonText="Create Tournament">
+            {(onCancel) => (
               <div className="p-4 border rounded bg-gray-50 flex items-center gap-2">
-                <input
-                  type="text"
+                <InputField
                   value={newTournamentName}
                   onChange={(e) => setNewTournamentName(e.target.value)}
                   placeholder="New tournament name"
-                  className="p-2 border rounded w-full"
+                  className="w-full"
                 />
-                <input
-                  type="text"
+                <InputField
                   value={newTournamentYear}
                   onChange={(e) => setNewTournamentYear(e.target.value)}
                   placeholder="Year"
-                  className="p-2 border rounded w-1/4"
+                  className="w-1/4"
                 />
-                <button onClick={handleCreate} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-                  Save
-                </button>
-                <button onClick={handleCancelCreate} className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">
-                  Cancel
-                </button>
+                <ListSaveButton onClick={() => handleCreate(onCancel)} />
+                <ListCancelButton onClick={onCancel} />
               </div>
             )}
-          </div>
+          </ListCreateButton>
 
-          {tournaments && tournaments.length > 0 ? (
-            <div className="space-y-2">
-              {tournaments.map((tournament: Tournament) => (
-                <Link key={tournament.id} href={`/tournaments/${tournament.id}`}>
-                  <div className="p-2 border rounded shadow-sm cursor-pointer hover:bg-gray-100 flex justify-between items-center">
-                    <span>{tournament.name}</span>
-                    <span>{tournament.year}</span>
-                    <ListDeleteButton onClick={(event) => handleDelete(tournament.id, event)} />
-                  </div>
-                </Link>
-              ))}
-            </div>
-          ) : (
-            <p>No tournaments found.</p>
-          )}
+          <DataList<Tournament>
+            items={tournaments}
+            getItemUrl={(tournament) => `/tournaments/${tournament.id}`}
+            noItemsText="No tournaments found."
+            renderItem={(tournament) => (
+              <div className="flex justify-between items-center">
+                <div className="flex gap-4">
+                  <span>{tournament.name}</span>
+                  <span>{tournament.year}</span>
+                </div>
+                <ListDeleteButton onClick={(event) => handleDelete(tournament.id, event)} />
+              </div>
+            )}
+          />
         </>
       )}
     </div>

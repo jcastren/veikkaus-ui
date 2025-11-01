@@ -1,40 +1,15 @@
-import { useState } from 'react'
-import axios from 'axios'
+import { useState, type ReactNode } from 'react'
 
-// The component is now generic, accepting the type of the created item
-interface ListCreateButtonProps<T> {
-  onCreate: (newItem: T) => void
-  apiUrl: string
-  placeholderText: string
+interface ListCreateButtonProps {
   buttonText: string
+  children: (onCancel: () => void) => ReactNode
 }
 
-export function ListCreateButton<T>({ onCreate, apiUrl, placeholderText, buttonText }: ListCreateButtonProps<T>) {
+export function ListCreateButton({ buttonText, children }: ListCreateButtonProps) {
   const [isCreating, setIsCreating] = useState(false)
-  const [newItemName, setNewItemName] = useState("")
-  const [error, setError] = useState<string | null>(null)
 
-  const handleCreate = async () => {
-    if (!newItemName.trim()) {
-      alert("Name cannot be empty.")
-      return
-    }
-    try {
-      // Use the generic apiUrl prop for the POST request
-      const response = await axios.post<T>(apiUrl, { name: newItemName })
-      onCreate(response.data)
-      setNewItemName("")
-      setIsCreating(false)
-      setError(null)
-    } catch (err) {
-      setError(`Failed to create item at ${apiUrl}`)
-    }
-  }
-
-  const handleCancelCreate = () => {
-    setNewItemName("")
+  const handleCancel = () => {
     setIsCreating(false)
-    setError(null)
   }
 
   return (
@@ -44,23 +19,10 @@ export function ListCreateButton<T>({ onCreate, apiUrl, placeholderText, buttonT
           {buttonText}
         </button>
       ) : (
-        <div className="p-4 border rounded bg-gray-50 flex items-center gap-2">
-          <input
-            type="text"
-            value={newItemName}
-            onChange={(e) => setNewItemName(e.target.value)}
-            placeholder={placeholderText}
-            className="p-2 border rounded w-full"
-          />
-          <button onClick={handleCreate} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-            Save
-          </button>
-          <button onClick={handleCancelCreate} className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">
-            Cancel
-          </button>
-        </div>
+        // The form content is now passed in from the parent component.
+        // We provide the `handleCancel` function so the child can close itself.
+        children(handleCancel)
       )}
-      {error && <p className="text-red-500 mt-2">{error}</p>}
     </div>
   )
 }
