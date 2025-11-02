@@ -94,14 +94,14 @@ export default function TeamList() {
             )}
           </ListCreateButton>
 
-          <table className="min-w-full divide-y divide-gray-200 mt-4">
+          <table className="min-w-full divide-y divide-gray-200 mt-4 table-fixed">
             <ListHeaderRow headers={listHeaders} actionsHeaderText="Actions" />
             <DataList<Team>
               items={teams}
               noItemsText="No teams found."
               renderItem={(team) => (
                 <tr key={team.id} className="hover:bg-gray-50 text-left cursor-pointer" onClick={() => setLocation(`/teams/${team.id}`)}>
-                  <td className="p-2 whitespace-nowrap w-full">{team.name}</td>
+                  <td className="p-2 whitespace-nowrap">{team.name}</td>
                   <td className="p-2 whitespace-nowrap">
                     <ListDeleteButton onClick={(e) => { e.stopPropagation(); handleDelete(team.id); }} />
                   </td>

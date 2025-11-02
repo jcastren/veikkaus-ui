@@ -13,8 +13,8 @@ import { DataList } from "../components/DataList.js"
 import { ListHeaderRow, type Header as HeaderType } from "../components/ListHeaderRow.js"
 
 const listHeaders: HeaderType[] = [
-  { text: "Name", className: "w-3/4" },
-  { text: "Year", className: "w-1/4" },
+  { text: "Name", className: "w-1/2" },
+  { text: "Year", className: "w-1/2" },
 ]
 
 export default function TournamentList() {
@@ -103,15 +103,15 @@ export default function TournamentList() {
             )}
           </ListCreateButton>
 
-          <table className="min-w-full divide-y divide-gray-200 mt-4">
+          <table className="min-w-full divide-y divide-gray-200 mt-4 table-fixed">
             <ListHeaderRow headers={listHeaders} actionsHeaderText="Actions" />
             <DataList<Tournament>
               items={tournaments}
               noItemsText="No tournaments found."
               renderItem={(tournament) => (
                 <tr key={tournament.id} className="hover:bg-gray-50 text-left cursor-pointer" onClick={() => setLocation(`/tournaments/${tournament.id}`)}>
-                  <td className="p-2 whitespace-nowrap w-3/4">{tournament.name}</td>
-                  <td className="p-2 whitespace-nowrap w-1/4">{tournament.year}</td>
+                  <td className="p-2 whitespace-nowrap">{tournament.name}</td>
+                  <td className="p-2 whitespace-nowrap">{tournament.year}</td>
                   <td className="p-2 whitespace-nowrap">
                     <ListDeleteButton onClick={(e) => { e.stopPropagation(); handleDelete(tournament.id); }} />
                   </td>
