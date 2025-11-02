@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import { useLocation } from 'wouter'
 import type { Team } from "../common/teams.js"
 import { Header } from "../components/Header.js"
 import { ListCreateButton } from "../components/ListCreateButton.js"
@@ -11,7 +12,6 @@ import { Loading } from "../components/Loading.js"
 import { DataList } from "../components/DataList.js"
 import { ListHeaderRow, type Header as HeaderType } from "../components/ListHeaderRow.js"
 
-// Define column headers and their widths
 const listHeaders: HeaderType[] = [
   { text: "Name", className: "w-full" },
 ]
@@ -21,6 +21,7 @@ export default function TeamList() {
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
   const [newTeamName, setNewTeamName] = useState("")
+  const [, setLocation] = useLocation()
 
   const fetchTeams = async () => {
     try {
@@ -54,10 +55,7 @@ export default function TeamList() {
     }
   }
 
-  const handleDelete = async (teamId: number, event: React.MouseEvent) => {
-    event.stopPropagation()
-    event.preventDefault()
-
+  const handleDelete = async (teamId: number) => {
     if (!window.confirm("Are you sure you want to delete this team?")) {
       return
     }
@@ -83,7 +81,7 @@ export default function TeamList() {
         <>
           <ListCreateButton buttonText="Create Team">
             {(onCancel) => (
-              <div className="p-4 border rounded bg-gray-50 flex items-center text-left gap-2">
+              <div className="p-4 border rounded bg-gray-50 flex items-center gap-2">
                 <InputField
                   value={newTeamName}
                   onChange={(e) => setNewTeamName(e.target.value)}
@@ -96,20 +94,21 @@ export default function TeamList() {
             )}
           </ListCreateButton>
 
-          <ListHeaderRow headers={listHeaders} actionsHeaderText="Actions" />
-          <DataList<Team>
-            items={teams}
-            getItemUrl={(team) => `/teams/${team.id}`}
-            noItemsText="No teams found."
-            renderMainContent={(team) => (
-              <div className="flex-grow flex items-center text-left gap-4">
-                <div className="w-full">{team.name}</div>
-              </div>
-            )}
-            renderActions={(team) => (
-              <ListDeleteButton onClick={(event) => handleDelete(team.id, event)} />
-            )}
-          />
+          <table className="min-w-full divide-y divide-gray-200 mt-4">
+            <ListHeaderRow headers={listHeaders} actionsHeaderText="Actions" />
+            <DataList<Team>
+              items={teams}
+              noItemsText="No teams found."
+              renderItem={(team) => (
+                <tr key={team.id} className="hover:bg-gray-50 text-left cursor-pointer" onClick={() => setLocation(`/teams/${team.id}`)}>
+                  <td className="p-2 whitespace-nowrap w-full">{team.name}</td>
+                  <td className="p-2 whitespace-nowrap">
+                    <ListDeleteButton onClick={(e) => { e.stopPropagation(); handleDelete(team.id); }} />
+                  </td>
+                </tr>
+              )}
+            />
+          </table>
         </>
       )}
     </div>

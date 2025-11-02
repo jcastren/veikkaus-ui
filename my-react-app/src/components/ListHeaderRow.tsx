@@ -10,15 +10,22 @@ interface ListHeaderRowProps {
 
 export function ListHeaderRow({ headers, actionsHeaderText }: ListHeaderRowProps) {
   return (
-    <div className="p-2 border-b-2 border-gray-300 flex justify-between items-center font-bold text-gray-600">
-      <div className="flex-grow flex items-center text-left gap-4">
+    <thead className="bg-gray-50">
+      <tr>
         {headers.map((header, index) => (
-          <div key={index} className={header.className}>
+          <th 
+            key={index} 
+            className={`p-2 text-left font-bold text-gray-600 tracking-wider ${header.className || ''}`}
+          >
             {header.text}
-          </div>
+          </th>
         ))}
-      </div>
-      {actionsHeaderText && <span>{actionsHeaderText}</span>}
-    </div>
+        {actionsHeaderText && (
+          <th className="p-2 text-left font-bold text-gray-600 tracking-wider">
+            {actionsHeaderText}
+          </th>
+        )}
+      </tr>
+    </thead>
   )
 }

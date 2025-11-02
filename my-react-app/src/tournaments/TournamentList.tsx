@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import { useLocation } from 'wouter'
 import type { Tournament } from "../common/tournaments.ts"
 import { Header } from "../components/Header.js"
 import { ListCreateButton } from "../components/ListCreateButton.js"
@@ -11,7 +12,6 @@ import { Loading } from "../components/Loading.js"
 import { DataList } from "../components/DataList.js"
 import { ListHeaderRow, type Header as HeaderType } from "../components/ListHeaderRow.js"
 
-// Define column headers and their widths
 const listHeaders: HeaderType[] = [
   { text: "Name", className: "w-3/4" },
   { text: "Year", className: "w-1/4" },
@@ -23,6 +23,7 @@ export default function TournamentList() {
   const [error, setError] = useState<string | null>(null)
   const [newTournamentName, setNewTournamentName] = useState("")
   const [newTournamentYear, setNewTournamentYear] = useState("")
+  const [, setLocation] = useLocation()
 
   const fetchTournaments = async () => {
     try {
@@ -57,10 +58,7 @@ export default function TournamentList() {
     }
   }
 
-  const handleDelete = async (tournamentId: number, event: React.MouseEvent) => {
-    event.stopPropagation()
-    event.preventDefault()
-
+  const handleDelete = async (tournamentId: number) => {
     if (!window.confirm("Are you sure you want to delete this tournament?")) {
       return
     }
@@ -86,7 +84,7 @@ export default function TournamentList() {
         <>
           <ListCreateButton buttonText="Create Tournament">
             {(onCancel) => (
-              <div className="p-4 border rounded bg-gray-50 flex items-center text-left gap-2">
+              <div className="p-4 border rounded bg-gray-50 flex items-center gap-2">
                 <InputField
                   value={newTournamentName}
                   onChange={(e) => setNewTournamentName(e.target.value)}
@@ -105,21 +103,22 @@ export default function TournamentList() {
             )}
           </ListCreateButton>
 
-          <ListHeaderRow headers={listHeaders} actionsHeaderText="Actions" />
-          <DataList<Tournament>
-            items={tournaments}
-            getItemUrl={(tournament) => `/tournaments/${tournament.id}`}
-            noItemsText="No tournaments found."
-            renderMainContent={(tournament) => (
-              <div className="flex-grow flex items-center text-left gap-4">
-                <div className="w-3/4">{tournament.name}</div>
-                <div className="w-1/4">{tournament.year}</div>
-              </div>
-            )}
-            renderActions={(tournament) => (
-              <ListDeleteButton onClick={(event) => handleDelete(tournament.id, event)} />
-            )}
-          />
+          <table className="min-w-full divide-y divide-gray-200 mt-4">
+            <ListHeaderRow headers={listHeaders} actionsHeaderText="Actions" />
+            <DataList<Tournament>
+              items={tournaments}
+              noItemsText="No tournaments found."
+              renderItem={(tournament) => (
+                <tr key={tournament.id} className="hover:bg-gray-50 text-left cursor-pointer" onClick={() => setLocation(`/tournaments/${tournament.id}`)}>
+                  <td className="p-2 whitespace-nowrap w-3/4">{tournament.name}</td>
+                  <td className="p-2 whitespace-nowrap w-1/4">{tournament.year}</td>
+                  <td className="p-2 whitespace-nowrap">
+                    <ListDeleteButton onClick={(e) => { e.stopPropagation(); handleDelete(tournament.id); }} />
+                  </td>
+                </tr>
+              )}
+            />
+          </table>
         </>
       )}
     </div>
