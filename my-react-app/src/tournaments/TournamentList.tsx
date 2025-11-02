@@ -28,7 +28,8 @@ export default function TournamentList() {
       alert("Tournament name and year cannot be empty.")
       return
     }
-    await createItem({ name: newTournamentName, year: newTournamentYear })
+    // --- The Fix: Convert year to a number before sending ---
+    await createItem({ name: newTournamentName, year: parseInt(newTournamentYear, 10) })
     setNewTournamentName("")
     setNewTournamentYear("")
     onCancel()
@@ -46,8 +47,6 @@ export default function TournamentList() {
 
       <Loading loading={loading} error={error} />
 
-      {/* --- The Fix --- */}
-      {/* The main content should only be hidden during the initial load. */}
       {!loading && (
         <>
           <ListCreateButton buttonText="Create Tournament">
@@ -60,6 +59,7 @@ export default function TournamentList() {
                   className="w-full"
                 />
                 <InputField
+                  type="number" // Use number type for better UX
                   value={newTournamentYear}
                   onChange={(e) => setNewTournamentYear(e.target.value)}
                   placeholder="Year"

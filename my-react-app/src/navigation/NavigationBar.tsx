@@ -1,15 +1,14 @@
-import React from 'react';
+import { Link } from 'wouter'
 
-const NavigationBar: React.FC = () => {
+export default function NavigationBar() {
   return (
     <nav className="bg-gray-100 p-4">
       <ul className="flex space-x-4">
-        <li><a href="/" className="navigation_item">Home</a></li>
-        <li><a href="/tournaments" className="navigation_item">Tournaments</a></li>
-        <li><a href="/teams" className="navigation_item">Teams</a></li>
+        <li><Link href="/" className="navigation_item">Home</Link></li>
+        <li><Link href="/tournaments" className="navigation_item">Tournaments</Link></li>
+        <li><Link href="/teams" className="navigation_item">Teams</Link></li>
+        <li><Link href="/tournament-teams" className="navigation_item">Tournament Teams</Link></li>
       </ul>
     </nav>
-  );
-};
-
-export default NavigationBar;
+  )
+}

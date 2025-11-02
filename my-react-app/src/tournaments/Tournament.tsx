@@ -27,7 +27,7 @@ export default function Tournament() {
           setEditedYear(response.data.year)
         } catch (err) {
           if (axios.isAxiosError(err) && err.response?.status === 404) {
-            setError("Tournament not found.")
+            setError("TournamentTeam not found.")
           } else {
             setError("An unexpected error occurred while fetching the tournament.")
           }
