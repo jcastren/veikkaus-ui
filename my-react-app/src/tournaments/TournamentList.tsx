@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react'
-import axios from 'axios'
+import { useState } from 'react'
 import { useLocation } from 'wouter'
 import type { Tournament } from "../common/tournaments.ts"
 import { Header } from "../components/Header.js"
@@ -11,6 +10,7 @@ import { ListCancelButton } from "../components/ListCancelButton.js"
 import { Loading } from "../components/Loading.js"
 import { DataList } from "../components/DataList.js"
 import { ListHeaderRow, type Header as HeaderType } from "../components/ListHeaderRow.js"
+import { useCrudList } from "../hooks/useCrudList.js"
 
 const listHeaders: HeaderType[] = [
   { text: "Name", className: "w-1/2" },
@@ -18,59 +18,25 @@ const listHeaders: HeaderType[] = [
 ]
 
 export default function TournamentList() {
-  const [tournaments, setTournaments] = useState<Tournament[] | null>(null)
-  const [loading, setLoading] = useState<boolean>(true)
-  const [error, setError] = useState<string | null>(null)
+  const { items: tournaments, loading, error, createItem, deleteItem } = useCrudList<Tournament>('http://localhost:8080/api/v2/tournaments')
   const [newTournamentName, setNewTournamentName] = useState("")
   const [newTournamentYear, setNewTournamentYear] = useState("")
   const [, setLocation] = useLocation()
-
-  const fetchTournaments = async () => {
-    try {
-      setLoading(true)
-      setError(null)
-      const response = await axios.get<Tournament[]>('http://localhost:8080/api/v2/tournaments')
-      setTournaments(response.data)
-    } catch (err) {
-      setError('Failed to fetch tournaments')
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  useEffect(() => {
-    void fetchTournaments()
-  }, [])
 
   const handleCreate = async (onCancel: () => void) => {
     if (!newTournamentName.trim() || !newTournamentYear.trim()) {
       alert("Tournament name and year cannot be empty.")
       return
     }
-    try {
-      const response = await axios.post<Tournament>('http://localhost:8080/api/v2/tournaments', { name: newTournamentName, year: newTournamentYear })
-      setTournaments(currentTournaments => [...(currentTournaments || []), response.data])
-      setNewTournamentName("")
-      setNewTournamentYear("")
-      onCancel()
-    } catch (err) {
-      setError('Failed to create tournament')
-    }
+    await createItem({ name: newTournamentName, year: newTournamentYear })
+    setNewTournamentName("")
+    setNewTournamentYear("")
+    onCancel()
   }
 
   const handleDelete = async (tournamentId: number) => {
-    if (!window.confirm("Are you sure you want to delete this tournament?")) {
-      return
-    }
-
-    const originalTournaments = tournaments
-    setTournaments(currentTournaments => currentTournaments?.filter(tournament => tournament.id !== tournamentId) || null)
-
-    try {
-      await axios.delete(`http://localhost:8080/api/v2/tournaments/${tournamentId}`)
-    } catch (err) {
-      setError('Failed to delete tournament. Please try again.')
-      setTournaments(originalTournaments)
+    if (window.confirm("Are you sure you want to delete this tournament?")) {
+      await deleteItem(tournamentId)
     }
   }
 
@@ -80,7 +46,9 @@ export default function TournamentList() {
 
       <Loading loading={loading} error={error} />
 
-      {!loading && !error && (
+      {/* --- The Fix --- */}
+      {/* The main content should only be hidden during the initial load. */}
+      {!loading && (
         <>
           <ListCreateButton buttonText="Create Tournament">
             {(onCancel) => (
