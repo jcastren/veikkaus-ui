@@ -3,7 +3,7 @@ import axios from 'axios'
 import { Link, useRoute, useLocation } from 'wouter'
 import type { Tournament as TournamentType } from '../common/tournaments.js'
 import { DataRow } from "../components/DataRow.js"
-import { CrudButtons } from "../components/CrudButtons.js" // Import the new component
+import { CrudButtons } from "../components/CrudButtons.js"
 
 export default function Tournament() {
   const [tournament, setTournament] = useState<TournamentType | null>(null)
@@ -11,7 +11,7 @@ export default function Tournament() {
   const [error, setError] = useState<string | null>(null)
   const [isEditing, setIsEditing] = useState(false)
   const [editedName, setEditedName] = useState("")
-  const [editedYear, setEditedYear] = useState("")
+  const [editedYear, setEditedYear] = useState(0)
 
   const [, params] = useRoute("/tournaments/:id")
   const [, setLocation] = useLocation()
@@ -27,7 +27,7 @@ export default function Tournament() {
           setEditedYear(response.data.year)
         } catch (err) {
           if (axios.isAxiosError(err) && err.response?.status === 404) {
-            setError("TournamentTeam not found.")
+            setError("Tournament not found.")
           } else {
             setError("An unexpected error occurred while fetching the tournament.")
           }
@@ -107,11 +107,11 @@ export default function Tournament() {
           caption="Year"
           value={isEditing ? editedYear : tournament!.year}
           isEditable={isEditing}
-          onValueChange={setEditedYear}
+          // --- The Fix: Convert the string from the input back to a number ---
+          onValueChange={(newValue) => setEditedYear(parseInt(newValue, 10) || 0)}
         />
       </div>
 
-      {/* Use the new CrudButtons component */}
       <CrudButtons
         isEditing={isEditing}
         onEdit={() => setIsEditing(true)}

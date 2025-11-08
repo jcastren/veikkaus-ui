@@ -7,6 +7,8 @@ import Team from "./teams/Team"
 import Tournament from "./tournaments/Tournament"
 import TournamentTeamList from "./tournamentteams/TournamentTeamList.js"
 import TournamentTeam from "./tournamentteams/TournamentTeam.js"
+import PlayerList from "./players/PlayerList.js"
+import Player from "./players/Player.js"
 
 function App() {
   return (
@@ -15,9 +17,11 @@ function App() {
       <Route path="/tournaments" component={TournamentList} />
       <Route path="/teams" component={TeamList} />
       <Route path="/tournament-teams" component={TournamentTeamList} />
+      <Route path="/players" component={PlayerList} />
       <Route path="/tournaments/:id" component={Tournament} />
       <Route path="/teams/:id" component={Team} />
       <Route path="/tournament-teams/:id" component={TournamentTeam} />
+      <Route path="/players/:id" component={Player} />
     </div>
   )
 }

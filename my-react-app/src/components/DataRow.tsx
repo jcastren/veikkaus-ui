@@ -1,6 +1,7 @@
 interface DataRowProps {
   caption: string
-  value: string
+  // --- The Fix: Allow value to be a string or a number ---
+  value: string | number
   isEditable?: boolean
   onValueChange?: (newValue: string) => void
 }
@@ -20,7 +21,8 @@ export function DataRow({ caption, value, isEditable, onValueChange }: DataRowPr
         {isEditable ? (
           <input
             type="text"
-            value={value}
+            // The input's value must be a string, so we convert it here.
+            value={value.toString()}
             onChange={handleChange}
             className="pl-2 border rounded"
           />
