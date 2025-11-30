@@ -13,6 +13,7 @@ import { useCrudList } from "../hooks/useCrudList.js"
 import type { TournamentTeam } from "../common/tournamentTeams.js"
 import type { TournamentPlayer } from "../common/tournamentPlayers.js"
 import type { Player } from "../common/players.js"
+import type { Tournament } from "../common/tournaments.js"
 
 const listHeaders: HeaderType[] = [
   { text: "Tournament team", className: "w-1/2" },
@@ -23,22 +24,26 @@ export default function TournamentPlayerList() {
   const { items: tournamentPlayers, loading, error, createItem, deleteItem } = useCrudList<TournamentPlayer>('http://localhost:8080/api/v2/tournament-players')
   const [, setLocation] = useLocation()
 
+  const [allTournaments, setAllTournaments] = useState<Tournament[]>([])
   const [allTournamentTeams, setAllTournamentTeams] = useState<TournamentTeam[]>([])
   const [allPlayers, setAllPlayers] = useState<Player[]>([])
   const [selectedTournamentTeamId, setSelectedTournamentTeamId] = useState<string>("")
   const [selectedPlayerId, setSelectedPlayerId] = useState<string>("")
 
+  const [filterTournamentId, setFilterTournamentId] = useState<string>("")
   const [filterTournamentTeamId, setFilterTournamentTeamId] = useState<string>("")
 
   useEffect(() => {
     const fetchDropdownData = async () => {
       try {
-        const [tournamentTeamsRes, playersRes] = await Promise.all([
+        const [tournaments, tournamentTeams, players] = await Promise.all([
+          axios.get<Tournament[]>('http://localhost:8080/api/v2/tournaments'),
           axios.get<TournamentTeam[]>('http://localhost:8080/api/v2/tournament-teams'),
           axios.get<Player[]>('http://localhost:8080/api/v2/players'),
         ])
-        setAllTournamentTeams(tournamentTeamsRes.data)
-        setAllPlayers(playersRes.data)
+        setAllTournaments(tournaments.data)
+        setAllTournamentTeams(tournamentTeams.data)
+        setAllPlayers(players.data)
       } catch (err) {
         console.error("Failed to fetch data for dropdowns", err)
       }
@@ -123,7 +128,17 @@ export default function TournamentPlayerList() {
           </ListCreateButton>
 
           <div className="mt-4 mb-2">
-            <label htmlFor="tournament-team-filter" className="mr-2 font-bold text-gray-700">Filter by tournament team:</label>
+            <label htmlFor="tournament-filter" className="mr-2 font-bold text-gray-700">Filter by tournament:</label>
+            <select
+              id="tournament-filter"
+              value={filterTournamentId}
+              onChange={(e) => setFilterTournamentId(e.target.value)}
+              className="p-2 border rounded"
+            >
+              <option value="">All tournaments</option>
+              {allTournaments.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
+            </select>
+            <label htmlFor="tournament-team-filter" className="ml-6 mr-2 font-bold text-gray-700">Filter by tournament team:</label>
             <select
               id="tournament-team-filter"
               value={filterTournamentTeamId}
@@ -142,8 +157,8 @@ export default function TournamentPlayerList() {
               noItemsText="No players have been added to tournament teams yet."
               renderItem={(item) => (
                 <tr key={item.id} className="hover:bg-gray-50 text-left cursor-pointer" onClick={() => setLocation(`/tournament-players/${item.id}`)}>
-                  <td className="p-2 whitespace-nowrap">{item.tournamentTeam.tournament.name}-{item.tournamentTeam.tournament.year}</td>
-                  <td className="p-2 whitespace-nowrap">{item.player.firstName}-{item.player.lastName}</td>
+                  <td className="p-2 whitespace-nowrap">{item.tournamentTeam.tournament.name} {item.tournamentTeam.team.name}</td>
+                  <td className="p-2 whitespace-nowrap">{item.player.firstName} {item.player.lastName}</td>
                   <td className="p-2 whitespace-nowrap text-right">
                     <ListDeleteButton onClick={(e) => { e.stopPropagation(); handleDelete(item.id); }} />
                   </td>
