@@ -71,3 +71,21 @@ export default defineConfig([
   },
 ])
 ```
+
+Setting up SSH key access for SourceTree
+```
+ssh-add --apple-use-keychain ~/.ssh/jcastren_github
+vi ~/.ssh/config
+
+add the following rows to the config file
+
+Host github.com
+  HostName github.com
+  User git
+  AddKeysToAgent yes
+  UseKeychain yes
+  IdentityFile ~/.ssh/jcastren_github
+  
+Reboot SourceTree
+ 
+```
