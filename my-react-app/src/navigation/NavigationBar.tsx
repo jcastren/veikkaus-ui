@@ -9,6 +9,7 @@ export default function NavigationBar() {
         <li><Link href="/tournament-teams" className="navigation_item">Tournament Teams</Link></li>
         <li><Link href="/players" className="navigation_item">Players</Link></li>
         <li><Link href="/tournament-players" className="navigation_item">Tournament Players</Link></li>
+        <li><Link href="/games" className="navigation_item">Games</Link></li>
       </ul>
     </nav>
   )
