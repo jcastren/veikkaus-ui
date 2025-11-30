@@ -12,13 +12,7 @@ import { Loading } from "../components/Loading.js"
 import { DataList } from "../components/DataList.js"
 import { ListHeaderRow, type Header as HeaderType } from "../components/ListHeaderRow.js"
 import { useCrudList } from "../hooks/useCrudList.js"
-
-// Define the shape of the TournamentTeam object
-interface TournamentTeam {
-  id: number
-  tournament: Tournament
-  team: Team
-}
+import type { TournamentTeam } from "../common/tournamentTeams.js"
 
 const listHeaders: HeaderType[] = [
   { text: "Tournament", className: "w-1/2" },
